@@ -12,6 +12,7 @@ const navigation = [
 ];
 
 const SideBar = ({ open, toggleSidebar }: { open: boolean; toggleSidebar: (arg: boolean) => void }) => {
+
     function classNames(...classes: any) {
         return classes.filter(Boolean).join(" ");
     }

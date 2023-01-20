@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 
-const GuestLayout: NextPage = () => {
+const GuestLayout: NextPage<{ children: React.ReactNode }> = ({ children }) => {
 	return (
-		<div>Guest Layout</div>
+		<div className="w-full h-full">{ children }</div>
 	)
 }
 

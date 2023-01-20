@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import type { NextPage } from 'next'
+import type { NextPageWithLayout } from "@/pages/_app";
 
-export default function Home() {
+const DashboardIndex: NextPageWithLayout = ({}) => {
   return (
     <>
 			<main className="relative z-0 flex-1 overflow-y-auto focus:outline-none">
@@ -21,3 +22,6 @@ export default function Home() {
     </>
   )
 }
+
+
+export default DashboardIndex;
