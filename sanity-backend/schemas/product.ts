@@ -22,6 +22,11 @@ export default {
       type: 'number',
     },
     {
+      name: 'stocks',
+      title: 'How many unit(s) of the product is available',
+      type: 'number',
+    },
+    {
       name: 'color',
       title: 'Color',
       type: 'string',
@@ -55,6 +60,11 @@ export default {
           ],
         },
       ],
+    },
+    {
+      name: 'available',
+      title: 'Is the product still available',
+      type: 'boolean',
     },
   ],
 }
