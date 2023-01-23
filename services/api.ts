@@ -29,10 +29,14 @@ export const apiSlice = createApi({
             query: () => 'product/',
             providesTags: ['IProduct']
         }),
+        getProduct: builder.query<IProduct, string | number>({
+            query: (id) => `product/${id}`,
+            providesTags: ['IProduct']
+        })
     }),
 });
 
-export const { useGetUserByIdQuery, useAddUserMutation, useGetProductsQuery, util: { getRunningQueriesThunk }  } = apiSlice
+export const { useGetUserByIdQuery, useAddUserMutation, useGetProductsQuery, useGetProductQuery, util: { getRunningQueriesThunk }  } = apiSlice
 
 // export endpoints to be used in ssr
-export const { getProducts } = apiSlice.endpoints
+export const { getProducts, getProduct } = apiSlice.endpoints

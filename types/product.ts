@@ -1,4 +1,4 @@
-type Image = {
+export type Image = {
     alt: { _slug: string; current: string };
     asset: { _type: string; _ref: string };
     _key: string;
