@@ -15,7 +15,7 @@ const Footer = () => {
 				Footer
 				</h2>
 				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-				<div className="border-t border-gray-200">
+				<div className="">
 					<div className="lg:grid lg:grid-cols-2 lg:gap-x-6 xl:gap-x-8">
 						<div className="flex items-center rounded-lg bg-gray-100 p-6 sm:p-10">
 							<div className="mx-auto max-w-sm">

@@ -1,44 +1,17 @@
 import { useState } from "react";
 import { Tab } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
-import { HeartIcon} from "@heroicons/react/24/outline";
+import { HeartIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import { getProduct, getRunningQueriesThunk } from "@/services/api";
 import { wrapper } from "@/store";
 import { Data } from "../api/product/[_id]";
-import { IProduct, Image } from "@/types/product";
 import { urlFor } from "@/utils/client";
 import { useFormatCurrency } from "@/hooks/useFormatCurrency";
+import { IProduct, Image as ImageProp } from "@/types/product";
 
-// const product = {
-//     name: "Zip Tote Basket",
-//     price: "$140",
-//     rating: 4,
-//     images: [
-//         {
-//             id: 1,
-//             name: "Angled view",
-//             src: "https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg",
-//             alt: "Angled front view with bag zipped and handles upright.",
-//         },
-//     ],
-//     colors: [
-//         { name: "Washed Black", bgColor: "bg-gray-700", selectedColor: "ring-gray-700" },
-//         { name: "White", bgColor: "bg-white", selectedColor: "ring-gray-400" },
-//         { name: "Washed Gray", bgColor: "bg-gray-500", selectedColor: "ring-gray-500" },
-//     ],
-//     description: `
-//     <p>The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.</p>
-//   `,
-//     details: [
-//         {
-//             name: "Features",
-//             items: ["Multiple strap configurations", "Spacious interior with top zip", "Leather handle and tabs", "Interior dividers", "Stainless strap loops", "Double stitched construction", "Water-resistant"],
-//         },
-//     ],
-// };
-
-const ProductDetail = ({ product }: {product: IProduct}) => {
+const ProductDetail = ({ product }: { product: IProduct }) => {
     const router = useRouter();
 
     function classNames(...classes: string[]): string {
@@ -54,12 +27,13 @@ const ProductDetail = ({ product }: {product: IProduct}) => {
                         {/* Image selector */}
                         <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
                             <Tab.List className="grid grid-cols-4 gap-6">
-                                { product.images?.map((image: Image) => (
+                                {product.images?.map((image: ImageProp) => (
                                     <Tab key={image._key} className="relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4">
                                         {({ selected }) => (
                                             <>
                                                 <span className="sr-only"> {product.name} </span>
                                                 <span className="absolute inset-0 overflow-hidden rounded-md">
+                                                    {/* <Image src={urlFor(image.asset._ref).url()} alt={image.alt.current} className="h-full w-full object-cover object-center sm:rounded-lg" /> */}
                                                     <img src={urlFor(image.asset._ref).url()} alt={image.alt.current} className="h-full w-full object-cover object-center" />
                                                 </span>
                                                 <span className={classNames(selected ? "ring-indigo-500" : "ring-transparent", "pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2")} aria-hidden="true" />
@@ -71,8 +45,9 @@ const ProductDetail = ({ product }: {product: IProduct}) => {
                         </div>
 
                         <Tab.Panels className="aspect-w-1 aspect-h-1 w-full">
-                            { product.images?.map((image: Image) => (
+                            {product.images?.map((image: ImageProp) => (
                                 <Tab.Panel key={image._key}>
+                                    {/* <Image fill src={urlFor(image.asset._ref).url()} alt={image.alt.current} className="h-full w-full object-cover object-center sm:rounded-lg" /> */}
                                     <img src={urlFor(image.asset._ref).url()} alt={image.alt.current} className="h-full w-full object-cover object-center sm:rounded-lg" />
                                 </Tab.Panel>
                             ))}
@@ -85,7 +60,7 @@ const ProductDetail = ({ product }: {product: IProduct}) => {
 
                         <div className="mt-3">
                             <h2 className="sr-only">Product information</h2>
-                            <p className="text-3xl tracking-tight text-gray-900">{ useFormatCurrency(product.price)}</p>
+                            <p className="text-3xl tracking-tight text-gray-900">{useFormatCurrency(product.price)}</p>
                         </div>
 
                         {/* Reviews */}
@@ -125,16 +100,16 @@ export const getServerSideProps = wrapper.getServerSideProps((store) => async ({
     const id = params?._id;
 
     let response: any;
-    if (typeof id === 'string') {
+    if (typeof id === "string") {
         response = await store.dispatch(getProduct.initiate(id));
-        
+
         await Promise.all(store.dispatch(getRunningQueriesThunk()));
     }
     const product = response.data as unknown as Data;
 
     return {
         props: {
-            product: product.data
+            product: product.data,
         },
     };
 });

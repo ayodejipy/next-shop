@@ -11,11 +11,11 @@ export type Data = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
-        try {
-            // fetch lists of products from sanity
-            const response = await client.fetch(productQuery);
-            res.status(200).json({ success: true, message: "Products fetched successfully", data: response });
-        } catch (error) {
-            res.status(400).json({ success: false, message: "Unable to fetch products" });
-        }
+    try {
+        // fetch lists of products from sanity
+        const response = await client.fetch(productQuery);
+        res.status(200).json({ success: true, message: "Products fetched successfully", data: response });
+    } catch (error) {
+        res.status(400).json({ success: false, message: "Unable to fetch products" });
+    }
 }

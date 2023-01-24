@@ -1,10 +1,9 @@
 import { Fragment, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import Cart from "@/components/product/cart";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { navigation } from "@/utils/links";
-import Link from "next/link";
-import Cart from "@/components/product/cart";
 
 const Navbar = () => {
     // open cart state
@@ -45,6 +44,12 @@ const Navbar = () => {
                                     <div className="hidden lg:flex lg:items-center">
                                         <Link href="/">
                                             <span className="sr-only">Your Company</span>
+                                            {/* <Image
+                                                className="h-8 w-auto"
+                                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                                                alt="Company's logo"
+                                                fill
+                                            /> */}
                                             <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
                                         </Link>
                                     </div>
@@ -96,8 +101,9 @@ const Navbar = () => {
                                                     <span className="sr-only">items in cart, view bag</span>
                                                 </button>
                                             </div>
+
                                             {/* cart */}
-                                            <Cart open={open} onClose={setOpen} />
+                                            {/* <Cart open={open} onClose={setOpen} /> */}
                                         </div>
                                     </div>
                                 </div>
