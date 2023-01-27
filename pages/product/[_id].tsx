@@ -8,14 +8,24 @@ import { getProduct, getRunningQueriesThunk } from "@/services/api";
 import { wrapper } from "@/store";
 import { Data } from "../api/product/[_id]";
 import { urlFor } from "@/utils/client";
-import { useFormatCurrency } from "@/hooks/useFormatCurrency";
+import { formatCurrency } from "@/hooks/useFormatCurrency";
 import { IProduct, Image as ImageProp } from "@/types/product";
+import { useAppDispatch } from "@/store/hooks";
+import { addToCart } from "@/store/user";
 
 const ProductDetail = ({ product }: { product: IProduct }) => {
     const router = useRouter();
+    const dispatch = useAppDispatch()
 
     function classNames(...classes: string[]): string {
         return classes.filter(Boolean).join(" ");
+    }
+
+    // add to cart 
+    function addProductToCart(e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        // dispatch action
+        dispatch(addToCart(product))
     }
 
     return (
@@ -60,7 +70,7 @@ const ProductDetail = ({ product }: { product: IProduct }) => {
 
                         <div className="mt-3">
                             <h2 className="sr-only">Product information</h2>
-                            <p className="text-3xl tracking-tight text-gray-900">{useFormatCurrency(product.price)}</p>
+                            <p className="text-3xl tracking-tight text-gray-900">{formatCurrency(product.price)}</p>
                         </div>
 
                         {/* Reviews */}
@@ -84,7 +94,10 @@ const ProductDetail = ({ product }: { product: IProduct }) => {
 
                         <form className="mt-6">
                             <div className="sm:flex-col1 mt-10 flex">
-                                <button type="submit" className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full">
+                                <button
+                                    type="submit" disabled={product.stocks == 0 || !product.available}
+                                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => addProductToCart(e)}
+                                    className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full disabled:bg-gray-500 disabled:text-gray-800">
                                     Add to bag
                                 </button>
                             </div>

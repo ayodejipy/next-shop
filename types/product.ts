@@ -14,7 +14,14 @@ export interface IProduct {
     images: Image[];
     price: number;
     color: string;
+    stocks: number;
+    available: boolean;
     _createdAt: string;
     _updatedAt: string;
+}
+
+export interface ICartProduct {
+    item: IProduct;
+    quantity: number
 }
 

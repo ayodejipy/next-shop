@@ -1,11 +1,12 @@
 import { Fragment, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Cart from "@/components/product/cart";
-import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
+import CartItems from "@/components/product/CartItems";
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useAppSelector } from "@/store/hooks";
 
 const Navbar = () => {
+    const cart = useAppSelector((store) => store.user.cart);
     // open cart state
     const [open, setOpen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -97,13 +98,11 @@ const Navbar = () => {
                                             <div className="flow-root">
                                                 <button type="button" onClick={() => setOpen(true)} className="group -m-2 flex items-center p-2">
                                                     <ShoppingCartIcon className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{ cart?.length }</span>
                                                     <span className="sr-only">items in cart, view bag</span>
                                                 </button>
                                             </div>
 
-                                            {/* cart */}
-                                            {/* <Cart open={open} onClose={setOpen} /> */}
                                         </div>
                                     </div>
                                 </div>
@@ -112,6 +111,9 @@ const Navbar = () => {
                     </div>
                 </nav>
             </header>
+
+            {/* cart */}
+            <CartItems open={open} toggle={setOpen} />
         </>
     );
 };

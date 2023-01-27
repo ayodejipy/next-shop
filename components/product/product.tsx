@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { IProduct } from "@/types/product";
 import { urlFor } from "@/utils/client";
+import { useFormatCurrency } from "@/hooks/useFormatCurrency";
 
 const Product = ({ product }: {product: IProduct}) => {
     return (
@@ -21,7 +22,7 @@ const Product = ({ product }: {product: IProduct}) => {
                     </h3>
                     <p className="mt-1 text-sm text-gray-500">{product.color}</p>
                 </div>
-                <p className="text-sm font-medium text-gray-900">{product.price}</p>
+                <p className="text-sm font-medium text-gray-900">{ useFormatCurrency(product.price) }</p>
             </div>
         </div>
     );

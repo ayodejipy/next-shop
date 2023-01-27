@@ -75,14 +75,14 @@ const Footer = () => {
 
 					<div className="mt-4 flex items-center justify-center md:mt-0">
 						<div className="ml-6 border-l border-gray-200 pl-6">
-							<a href="#" className="flex items-center text-gray-500 hover:text-gray-600">
+							{/* <a href="#" className="flex items-center text-gray-500 hover:text-gray-600">
 							<img
 								src="https://tailwindui.com/img/flags/flag-nigeria.svg"
 								alt=""
 								className="h-auto w-5 flex-shrink-0"
 							/>
 							<span className="sr-only">location and currency</span>
-							</a>
+							</a> */}
 						</div>
 					</div>
 				</div>
