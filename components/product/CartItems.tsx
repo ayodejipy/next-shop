@@ -12,8 +12,11 @@ interface IProps {
 }
 
 function CartItems({ open, toggle }: IProps) {
+    // STATE
     const cart = useAppSelector((store) => store.user.cart);
 
+
+    // METHODS 
 	const getTotal: number = cart.reduce((acc: number, prev: ICartProduct) => (acc += prev.quantity * prev.item.price), 0);
 	
     return (
@@ -56,7 +59,7 @@ function CartItems({ open, toggle }: IProps) {
                                                                         <div>
                                                                             <div className="flex justify-between text-base font-medium text-gray-900">
                                                                                 <h3>
-                                                                                    <a href={`/${product.item._id}`}>{product.item.name}</a>
+                                                                                    {product.item.name}
                                                                                 </h3>
                                                                                 <p className="ml-4">{formatCurrency(product.item.price)}</p>
                                                                             </div>
@@ -82,7 +85,7 @@ function CartItems({ open, toggle }: IProps) {
                                             <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                                                 <div className="flex justify-between text-base font-medium text-gray-900">
                                                     <p>Subtotal</p>
-                                                    <p>{getTotal}</p>
+                                                    <p>{ formatCurrency(getTotal)}</p>
                                                 </div>
                                                 <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                                                 <div className="mt-6">
@@ -93,7 +96,7 @@ function CartItems({ open, toggle }: IProps) {
                                                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                                                     <p>
                                                         or
-                                                        <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={() => toggle(false)}>
+                                                        <button type="button" className="ml-1 first-letter:font-medium text-indigo-600 hover:text-indigo-500" onClick={() => toggle(false)}>
                                                             Continue Shopping
                                                             <span aria-hidden="true"> &rarr;</span>
                                                         </button>

@@ -9,9 +9,11 @@ import type { NextPageWithLayout } from "@/pages/_app";
 import GuestLayout from "@/layouts/guest";
 
 const SignIn: NextPageWithLayout = () => {
+    // STATES
     const user = useAppSelector((state) => state.user.user);
     const dispatch = useAppDispatch();
 
+    // METHODS
     const [addUser, { data, isLoading }] = useAddUserMutation();
 
     const handleLogin = async (credential: any): Promise<void> => {

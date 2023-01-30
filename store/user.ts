@@ -3,7 +3,7 @@ import type { User } from "@/types/user";
 import type { IProduct, ICartProduct } from "@/types/product";
 
 interface InitialStates {
-    user: User | undefined;
+    user: User;
     cart: ICartProduct[];
 }
 
@@ -18,6 +18,9 @@ export const user = createSlice({
     reducers: {
         getUsers: (state, action: PayloadAction<User>) => {
             state.user = action.payload;
+        },
+        clearUser: (state) => {
+            state.user = initialState.user
         },
         addToCart: (state, action: PayloadAction<IProduct>) => {
             // check if product exists
