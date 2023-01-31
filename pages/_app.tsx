@@ -8,7 +8,6 @@ import { wrapper } from "@/store";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 
-
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
@@ -18,8 +17,11 @@ type AppPropsWithLayout = AppProps & {
 };
 
 export default function App({ Component, ...rest }: AppPropsWithLayout) {
-    const { store, props: { pageProps } } = wrapper.useWrappedStore(rest);
-    
+    const {
+        store,
+        props: { pageProps },
+    } = wrapper.useWrappedStore(rest);
+
     // redux persis
     const persistor = persistStore(store);
 

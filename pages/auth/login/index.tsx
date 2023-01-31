@@ -1,14 +1,16 @@
+import {useEffect} from 'react'
 import type { NextPage } from "next";
+import { useRouter } from 'next/router';
 import { GoogleLogin } from "@react-oauth/google";
 import { useAddUserMutation } from "@/services/api";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getUsers } from "@/store/user";
 import { getAuthUser } from "@/utils";
-import { User } from "@/types/user";
 import type { NextPageWithLayout } from "@/pages/_app";
 import GuestLayout from "@/layouts/guest";
 
 const SignIn: NextPageWithLayout = () => {
+    const router = useRouter()
     // STATES
     const user = useAppSelector((state) => state.user.user);
     const dispatch = useAppDispatch();
@@ -24,6 +26,7 @@ const SignIn: NextPageWithLayout = () => {
             .then((response: any) => {
                 const { _rev, _updatedAt, _createdAt, _type, ...rest } = response.data;
                 dispatch(getUsers(rest));
+                router.push('/')
             });
     };
 

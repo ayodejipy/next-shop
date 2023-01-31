@@ -2,11 +2,13 @@ import { Fragment, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import CartItems from "@/components/product/CartItems";
+import UserAvatar from "@/components/user/Avatar";
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAppSelector } from "@/store/hooks";
 
 const Navbar = () => {
     const cart = useAppSelector((store) => store.user.cart);
+    const user = useAppSelector(store => store.user.user);
     // open cart state
     const [open, setOpen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -78,18 +80,22 @@ const Navbar = () => {
                                     <div className="flex flex-1 items-center justify-end">
                                         <div className="flex items-center lg:ml-8">
                                             <div className="flex space-x-8">
-                                                <div className="hidden lg:flex">
+                                                <div className="hidden">
                                                     <a href="#" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
                                                         <span className="sr-only">Search</span>
                                                         <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
                                                     </a>
                                                 </div>
 
-                                                <div className="flex">
-                                                    <Link href="/auth/login" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
-                                                        <span className="sr-only">Account</span>
-                                                        <UserIcon className="h-6 w-6" aria-hidden="true" />
-                                                    </Link>
+                                                <div className="flex items-center">
+                                                    {user && user._id ? (
+                                                        <UserAvatar user={user} />
+                                                    ) : (
+                                                        <Link href="/auth/login" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
+                                                            <span className="sr-only">Account</span>
+                                                            <UserIcon className="h-6 w-6" aria-hidden="true" />
+                                                        </Link>  
+                                                    )}
                                                 </div>
                                             </div>
 
@@ -98,11 +104,10 @@ const Navbar = () => {
                                             <div className="flow-root">
                                                 <button type="button" onClick={() => setOpen(true)} className="group -m-2 flex items-center p-2">
                                                     <ShoppingCartIcon className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
-                                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{ cart?.length }</span>
+                                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cart?.length}</span>
                                                     <span className="sr-only">items in cart, view bag</span>
                                                 </button>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>

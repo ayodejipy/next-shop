@@ -32,10 +32,13 @@ export const user = createSlice({
             }
             // add a new one to the end of the list
             state.cart?.push({item: action.payload, quantity: 1})
+        },
+        removeItem: (state) => {
+
         }
     },
 });
 
-export const { getUsers, addToCart } = user.actions;
+export const { getUsers, clearUser, addToCart } = user.actions;
 
 export default user.reducer;
