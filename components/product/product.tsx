@@ -7,7 +7,7 @@ const Product = ({ product }: {product: IProduct}) => {
     return (
         <div className="group relative">
             <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
-                <img src={urlFor(product.images[0].asset._ref).size(150, 150).url()} alt={product.images[0].alt.current} className="h-full w-full object-cover object-center" />
+                <img src={urlFor(product.images[0].asset._ref).size(1000, 1000).url()} alt={product.images[0].alt.current} className="h-full w-full object-contain" />
             </div>
             <div className="mt-4 flex justify-between">
                 <div>
