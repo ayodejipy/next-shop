@@ -18,10 +18,22 @@ export interface IProduct {
     available: boolean;
     _createdAt: string;
     _updatedAt: string;
+    _type?: string | number;
+    _ref?: string | number;
+}
+
+export interface ProductOwner {
+    _type: string;
+    _ref: string | number;
 }
 
 export interface ICartProduct {
     item: IProduct;
-    quantity: number
+    quantity: number;
 }
 
+export interface ICartObject {
+    items: { _type: string; _ref: number;}[];
+    owner?: ProductOwner;
+    _type?: string;
+}

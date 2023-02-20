@@ -1,22 +1,32 @@
-import {useEffect} from 'react'
+import { useEffect } from "react";
 import type { NextPage } from "next";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import { GoogleLogin } from "@react-oauth/google";
-import { useAddUserMutation } from "@/services/api";
+import { useAddUserMutation, useSyncCartToUserMutation } from "@/services/api";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { getUsers } from "@/store/user";
 import { getAuthUser } from "@/utils";
 import type { NextPageWithLayout } from "@/pages/_app";
 import GuestLayout from "@/layouts/guest";
+import type { ICartProduct, ICartObject } from "@/types/product";
 
 const SignIn: NextPageWithLayout = () => {
-    const router = useRouter()
+    const router = useRouter();
     // STATES
     const user = useAppSelector((state) => state.user.user);
+    const cart = useAppSelector((state) => state.user.cart);
     const dispatch = useAppDispatch();
 
     // METHODS
     const [addUser, { data, isLoading }] = useAddUserMutation();
+    const [syncCartToUser, result] = useSyncCartToUserMutation();
+
+    async function migrateCart(cart: ICartObject) {
+        // trigger mutation
+        await syncCartToUser(cart).unwrap()
+        .then((response: any) => console.log('Successfully migrated carts for user'))
+        .catch((e: any)  => console.log('Migration failed'))
+    }
 
     const handleLogin = async (credential: any): Promise<void> => {
         const { user } = getAuthUser(credential);
@@ -26,7 +36,30 @@ const SignIn: NextPageWithLayout = () => {
             .then((response: any) => {
                 const { _rev, _updatedAt, _createdAt, _type, ...rest } = response.data;
                 dispatch(getUsers(rest));
-                router.push('/')
+
+                // check if cart is not empty
+                if (cart.length > 0) {
+                    const modifiedCart = cart.map((item: ICartProduct) => {
+                        const newProductmarkup = { _type: 'product', _ref: item.item._id };
+                        const newProduct = { item: newProductmarkup, quantity: item.quantity };
+
+                        return newProduct;
+                    });
+
+                    // sync items in cart to current user
+                    const item = {
+                        _type: "carts",
+                        items: modifiedCart,
+                        owner: {
+                            _type: "reference",
+                            _ref: rest._id,
+                        },
+                    } as unknown as ICartObject;
+                    
+                    migrateCart(item);
+                }
+
+                router.push("/");
             });
     };
 
@@ -60,11 +93,7 @@ const SignIn: NextPageWithLayout = () => {
 };
 
 SignIn.getLayout = function getLayout(page: React.ReactElement) {
-    return (
-        <GuestLayout>
-            { page }
-        </GuestLayout>
-    )
-}
+    return <GuestLayout>{page}</GuestLayout>;
+};
 
 export default SignIn;

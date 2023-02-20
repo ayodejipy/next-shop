@@ -2,12 +2,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import client from "@/utils/client";
 import { productQuery } from "@/queries/product";
-import type { IProduct } from "@/types/product";
+import type { ICartProduct } from "@/types/product";
 
 export type Data = {
     message: string;
     success: boolean;
-    data?: IProduct[];
+    data?: ICartProduct;
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {

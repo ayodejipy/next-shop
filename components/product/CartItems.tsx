@@ -2,9 +2,10 @@ import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import type { ICartProduct } from "@/types/product";
-import { useAppSelector } from "@/store/hooks";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { urlFor } from "@/utils/client";
 import { formatCurrency } from "@/hooks/useFormatCurrency";
+import { removeItem } from "@/store/user";
 
 interface IProps {
     open: boolean;
@@ -12,6 +13,8 @@ interface IProps {
 }
 
 function CartItems({ open, toggle }: IProps) {
+    const dispatch = useAppDispatch();
+
     // STATE
     const cart = useAppSelector((store) => store.user.cart);
 
@@ -69,7 +72,10 @@ function CartItems({ open, toggle }: IProps) {
                                                                             <p className="text-gray-500">Qty {product.quantity}</p>
 
                                                                             <div className="flex">
-                                                                                <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
+                                                                                <button type="button"
+                                                                                    className="font-medium text-indigo-600 hover:text-indigo-500"
+                                                                                    onClick={() => dispatch(removeItem(product))}
+                                                                                >
                                                                                     Remove
                                                                                 </button>
                                                                             </div>

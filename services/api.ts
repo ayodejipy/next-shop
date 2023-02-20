@@ -1,7 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { HYDRATE } from "next-redux-wrapper"
-import type { User } from "@/types/user"
-import type { IProduct } from "@/types/product";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { HYDRATE } from "next-redux-wrapper";
+import type { User } from "@/types/user";
+import type { IProduct, ICartObject } from "@/types/product";
+
+// type CartData = {ownerId: string } & ICartProduct
 
 export const apiSlice = createApi({
     baseQuery: fetchBaseQuery({
@@ -12,7 +14,7 @@ export const apiSlice = createApi({
             return action.payload[reducerPath];
         }
     },
-    tagTypes: ['IProduct'],
+    tagTypes: ["IProduct"],
     endpoints: (builder) => ({
         // takes response and payload type
         getUserById: builder.query<User, string | number>({
@@ -26,17 +28,31 @@ export const apiSlice = createApi({
             }),
         }),
         getProducts: builder.query<IProduct[], void>({
-            query: () => 'product/',
-            providesTags: ['IProduct']
+            query: () => "product/",
+            providesTags: ["IProduct"],
         }),
         getProduct: builder.query<IProduct, string | number>({
             query: (id) => `product/${id}`,
-            providesTags: ['IProduct']
-        })
+            providesTags: ["IProduct"],
+        }),
+        syncCartToUser: builder.mutation<void, ICartObject>({
+            query: (cart) => ({
+                url: "product/syncCartToUser",
+                method: "POST",
+                body: cart,
+            }),
+        }),
     }),
 });
 
-export const { useGetUserByIdQuery, useAddUserMutation, useGetProductsQuery, useGetProductQuery, util: { getRunningQueriesThunk }  } = apiSlice
+export const {
+    useGetUserByIdQuery,
+    useAddUserMutation,
+    useSyncCartToUserMutation,
+    useGetProductsQuery,
+    useGetProductQuery,
+    util: { getRunningQueriesThunk },
+} = apiSlice;
 
 // export endpoints to be used in ssr
-export const { getProducts, getProduct } = apiSlice.endpoints
+export const { getProducts, getProduct } = apiSlice.endpoints;

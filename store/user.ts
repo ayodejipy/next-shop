@@ -33,12 +33,19 @@ export const user = createSlice({
             // add a new one to the end of the list
             state.cart?.push({item: action.payload, quantity: 1})
         },
-        removeItem: (state) => {
-
+        removeItem: (state, action: PayloadAction<ICartProduct>) => {
+            const product = action.payload;
+            const productIndex = state.cart.findIndex((cartItem) => cartItem.item._id == action.payload.item._id)
+            
+            if (product.quantity > 1) {
+                state.cart[productIndex].quantity--
+            } else {
+                state.cart.splice(productIndex, 1)
+            }
         }
     },
 });
 
-export const { getUsers, clearUser, addToCart } = user.actions;
+export const { getUsers, clearUser, addToCart, removeItem } = user.actions;
 
 export default user.reducer;
