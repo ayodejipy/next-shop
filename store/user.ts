@@ -22,6 +22,9 @@ export const user = createSlice({
         clearUser: (state) => {
             state.user = initialState.user
         },
+        emptyCart: (state) => {
+            state.cart = initialState.cart
+        },
         addToCart: (state, action: PayloadAction<IProduct>) => {
             // check if product exists
             const index = state.cart?.findIndex((product) => product.item._id == action.payload._id)
@@ -46,6 +49,6 @@ export const user = createSlice({
     },
 });
 
-export const { getUsers, clearUser, addToCart, removeItem } = user.actions;
+export const { getUsers, clearUser, addToCart, removeItem, emptyCart } = user.actions;
 
 export default user.reducer;

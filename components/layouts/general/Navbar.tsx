@@ -1,12 +1,14 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import CartItems from "@/components/product/CartItems";
 import UserAvatar from "@/components/user/Avatar";
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useAppSelector } from "@/store/hooks";
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { clearUser } from "@/store/user";
 
 const Navbar = () => {
+    const dispatch = useAppDispatch();
     const cart = useAppSelector((store) => store.user.cart);
     const user = useAppSelector(store => store.user.user);
     // open cart state
@@ -15,6 +17,10 @@ const Navbar = () => {
 
     function classNames(...classes: any) {
         return classes.filter(Boolean).join(" ");
+    }
+
+    const checkLogin = () => {
+        if(!user) return dispatch(clearUser())
     }
 
     return (

@@ -1,4 +1,5 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import Stripe from "stripe";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import type { ICartProduct } from "@/types/product";
@@ -6,6 +7,8 @@ import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { urlFor } from "@/utils/client";
 import { formatCurrency } from "@/hooks/useFormatCurrency";
 import { removeItem } from "@/store/user";
+import { fetchPostJSON } from "@/utils/api-helper";
+import getStripe from "@/utils/get-stripejs";
 
 interface IProps {
     open: boolean;
@@ -16,12 +19,42 @@ function CartItems({ open, toggle }: IProps) {
     const dispatch = useAppDispatch();
 
     // STATE
+    const [isLoading, setIsLoading] = useState(false);
     const cart = useAppSelector((store) => store.user.cart);
 
+    // METHODS
+    const getTotal: number = cart.reduce((acc: number, prev: ICartProduct) => (acc += prev.quantity * prev.item.price), 0);
 
-    // METHODS 
-	const getTotal: number = cart.reduce((acc: number, prev: ICartProduct) => (acc += prev.quantity * prev.item.price), 0);
-	
+    const handleCheckout = async () => {
+        setIsLoading(true);
+        // create checkout session
+        const checkoutSession: Stripe.Checkout.Session = await fetchPostJSON("/api/product/checkout-session", { cart });
+
+        if ((checkoutSession as any).statusCode === 500) {
+            setIsLoading(false);
+            console.error((checkoutSession as any).message);
+            return;
+        }
+
+        // redirect to checkout
+        const stripe = await getStripe();
+        const { error } = await stripe!.redirectToCheckout({
+            // Make the id field from the Checkout Session creation API response
+            // available to this file, so you can provide it as parameter here
+            // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+            sessionId: checkoutSession.id,
+        });
+
+        // If `redirectToCheckout` fails due to a browser or network
+        // error, display the localized error message to your customer
+        // using `error.message`.
+        if (error) {
+            setIsLoading(false);
+            console.log(error);
+            console.warn(error.message);
+        }
+    };
+
     return (
         <>
             <Transition.Root show={open} as={Fragment}>
@@ -49,59 +82,64 @@ function CartItems({ open, toggle }: IProps) {
 
                                                 <div className="mt-8">
                                                     <div className="flow-root">
-                                                        <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                                            {cart.map((product: ICartProduct) => (
-                                                                <li key={product.item._id} className="flex py-6">
-                                                                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                                        <img src={urlFor(product.item.images[0].asset._ref).url()} alt={product.item.images[0].alt.current} className="h-full w-full object-cover object-center" />
+                                                        {cart.length > 0 ? (
+                                                            <ul role="list" className="-my-6 divide-y divide-gray-200">
+                                                                {cart.map((product: ICartProduct) => (
+                                                                    <li key={product.item._id} className="flex py-6">
+                                                                        <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                                                            <img src={urlFor(product.item.images[0].asset._ref).url()} alt={product.item.images[0].alt.current} className="h-full w-full object-cover object-center" />
 
-                                                                        {/* <img src={product.imageSrc} alt={product.imageAlt} className="h-full w-full object-cover object-center" /> */}
-                                                                    </div>
-
-                                                                    <div className="ml-4 flex flex-1 flex-col">
-                                                                        <div>
-                                                                            <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                                <h3>
-                                                                                    {product.item.name}
-                                                                                </h3>
-                                                                                <p className="ml-4">{formatCurrency(product.item.price)}</p>
-                                                                            </div>
-                                                                            <p className="mt-1 text-sm text-gray-500">{product.item.color}</p>
+                                                                            {/* <img src={product.imageSrc} alt={product.imageAlt} className="h-full w-full object-cover object-center" /> */}
                                                                         </div>
-                                                                        <div className="flex flex-1 items-end justify-between text-sm">
-                                                                            <p className="text-gray-500">Qty {product.quantity}</p>
 
-                                                                            <div className="flex">
-                                                                                <button type="button"
-                                                                                    className="font-medium text-indigo-600 hover:text-indigo-500"
-                                                                                    onClick={() => dispatch(removeItem(product))}
-                                                                                >
-                                                                                    Remove
-                                                                                </button>
+                                                                        <div className="ml-4 flex flex-1 flex-col">
+                                                                            <div>
+                                                                                <div className="flex justify-between text-base font-medium text-gray-900">
+                                                                                    <h3>{product.item.name}</h3>
+                                                                                    <p className="ml-4">{formatCurrency(product.item.price)}</p>
+                                                                                </div>
+                                                                                <p className="mt-1 text-sm text-gray-500">{product.item.color}</p>
+                                                                            </div>
+                                                                            <div className="flex flex-1 items-end justify-between text-sm">
+                                                                                <p className="text-gray-500">Qty {product.quantity}</p>
+
+                                                                                <div className="flex">
+                                                                                    <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={() => dispatch(removeItem(product))}>
+                                                                                        Remove
+                                                                                    </button>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        ) : (
+                                                            <div className="flex justify-center text-base font-medium text-gray-900">
+                                                                <p> Cart is currently empty </p>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-                                                <div className="flex justify-between text-base font-medium text-gray-900">
-                                                    <p>Subtotal</p>
-                                                    <p>{ formatCurrency(getTotal)}</p>
-                                                </div>
-                                                <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                                                <div className="mt-6">
-                                                    <a href="#" className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
-                                                        Checkout
-                                                    </a>
-                                                </div>
+                                                { cart.length > 0 ? (
+                                                    <>
+                                                        <div className="flex justify-between text-base font-medium text-gray-900">
+                                                            <p>Subtotal</p>
+                                                            <p>{formatCurrency(getTotal)}</p>
+                                                        </div>
+                                                        <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                                                        <div className="mt-6">
+                                                            <button type="button" onClick={handleCheckout} disabled={cart.length === 0} className="w-full flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700 disabled:bg-gray-400 disabled:text-gray-800 disabled:cursor-not-allowed">
+                                                                {isLoading ? "Loading" : "Checkout"}
+                                                            </button>
+                                                        </div>
+                                                    </>
+                                                ) : null}
+                                                
                                                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                                                     <p>
-                                                        or
                                                         <button type="button" className="ml-1 first-letter:font-medium text-indigo-600 hover:text-indigo-500" onClick={() => toggle(false)}>
                                                             Continue Shopping
                                                             <span aria-hidden="true"> &rarr;</span>

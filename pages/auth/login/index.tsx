@@ -56,7 +56,7 @@ const SignIn: NextPageWithLayout = () => {
                         },
                     } as unknown as ICartObject;
                     
-                    migrateCart(item);
+                    // migrateCart(item);
                 }
 
                 router.push("/");

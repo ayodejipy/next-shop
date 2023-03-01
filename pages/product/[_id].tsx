@@ -16,8 +16,6 @@ const ProductDetail = ({ product }: { product: IProduct }) => {
     const router = useRouter();
     const dispatch = useAppDispatch()
 
-    console.log({ router })
-
     function classNames(...classes: string[]): string {
         return classes.filter(Boolean).join(" ");
     }
