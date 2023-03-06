@@ -1,26 +1,34 @@
-import { Fragment, useState, } from "react";
+import { Fragment, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { Dialog, Transition } from '@headlessui/react'
 import CartItems from "@/components/product/CartItems";
+import Modal from "@/components/Uis/Modal";
 import UserAvatar from "@/components/user/Avatar";
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingCartIcon, ShoppingBagIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { clearUser } from "@/store/user";
 
 const Navbar = () => {
     const dispatch = useAppDispatch();
     const cart = useAppSelector((store) => store.user.cart);
-    const user = useAppSelector(store => store.user.user);
+    const user = useAppSelector((store) => store.user.user);
     // open cart state
     const [open, setOpen] = useState(false);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [openModal, setOpenModal] = useState(false);
 
     function classNames(...classes: any) {
         return classes.filter(Boolean).join(" ");
     }
 
     const checkLogin = () => {
-        if(!user) return dispatch(clearUser())
+        if (!user) return dispatch(clearUser());
+    };
+
+    const toggleModal = () => {
+        // negate the previous value
+        setOpenModal(prev => !prev);
     }
 
     return (
@@ -80,7 +88,7 @@ const Navbar = () => {
                                     {/* Logo (lg-) */}
                                     <a href="#" className="lg:hidden">
                                         <span className="sr-only">Your Company</span>
-                                        <img src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" className="h-8 w-auto" />
+                                        <img src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Company's logo" className="h-8 w-auto" />
                                     </a>
 
                                     <div className="flex flex-1 items-center justify-end">
@@ -97,10 +105,21 @@ const Navbar = () => {
                                                     {user && user._id ? (
                                                         <UserAvatar user={user} />
                                                     ) : (
-                                                        <Link href="/auth/login" className="-m-2 p-2 text-gray-400 hover:text-gray-500">
-                                                            <span className="sr-only">Account</span>
-                                                            <UserIcon className="h-6 w-6" aria-hidden="true" />
-                                                        </Link>  
+                                                        <>
+                                                            <Link href="/auth/login" className="-m-2 p-2 inline-block sm:hidden text-gray-400 hover:text-gray-500">
+                                                                <span className="sr-only">Account</span>
+                                                                <UserIcon className="h-6 w-6" aria-hidden="true" />
+                                                            </Link>
+                                                            <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                                                                <Link href="/auth/login"  className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                                    Sign in
+                                                                </Link>
+                                                                <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
+                                                                <Link href="/auth/login"  onClick={toggleModal} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                                    Create account
+                                                                </Link>
+                                                            </div>
+                                                        </>
                                                     )}
                                                 </div>
                                             </div>
@@ -109,7 +128,7 @@ const Navbar = () => {
 
                                             <div className="flow-root">
                                                 <button type="button" onClick={() => setOpen(true)} className="group -m-2 flex items-center p-2">
-                                                    <ShoppingCartIcon className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500" aria-hidden="true" />
+                                                    <ShoppingBagIcon className="h-6 w-6 flex-shrink-0 text-gray-800 group-hover:text-gray-500" aria-hidden="true" />
                                                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cart?.length}</span>
                                                     <span className="sr-only">items in cart, view bag</span>
                                                 </button>
@@ -125,6 +144,12 @@ const Navbar = () => {
 
             {/* cart */}
             <CartItems open={open} toggle={setOpen} />
+
+            {/* <Modal isOpen={openModal} toggleModal={toggleModal}>
+                <div className="mt-2">
+                    <p className="text-sm text-gray-500">Your payment has been successfully submitted. We’ve sent you an email with all of the details of your order.</p>
+                </div>
+            </Modal> */}
         </>
     );
 };

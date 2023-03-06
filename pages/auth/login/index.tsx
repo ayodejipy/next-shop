@@ -80,7 +80,7 @@ const SignIn: NextPageWithLayout = () => {
                                 <GoogleLogin
                                     onSuccess={(credentialResponse) => handleLogin(credentialResponse)}
                                     onError={() => {
-                                        console.log("Login Failed");
+                                        console.error("Login Failed");
                                     }}
                                 />
                             </div>

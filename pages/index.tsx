@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import Head from "next/head";
-import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Product from "@/components/product/product";
+import Banner from "@/components/Uis/Banner";
+import Promotion from "@/components/Uis/Promotion";
 import { getProducts, getRunningQueriesThunk } from "@/services/api";
 import { useAppDispatch } from "@/store/hooks";
 import { emptyCart } from "@/store/user";
@@ -38,9 +38,13 @@ const Home = ({ products }: { products: IProduct[] }) => {
     return (
         <>
             <ToastContainer bodyClassName={() => "text-sm font-medium font-gray-800 block px-2"} />
+            <Banner />
             <div className="bg-white">
                 <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-                    <h2 className="text-2xl text-center font-bold tracking-tight text-gray-900 md:mb-10">Featured Products</h2>
+                    <div className="md:mb-16 lg:mb-20">
+                        <h2 className="text-3xl text-center font-bold tracking-tight leading-wide text-gray-900">Featured Products</h2>
+                        <p className="text-gray-500 text-center leading-normal">Our feature products are carefully selected based on their quality, style, and functionality. We pride ourselves on providing our customers with a wide range of high-quality products that not only meet but exceed their expectations.</p>
+                    </div>
 
                     <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                         {products.map((product) => (
@@ -49,6 +53,7 @@ const Home = ({ products }: { products: IProduct[] }) => {
                     </div>
                 </div>
             </div>
+            <Promotion />
         </>
     );
 };
