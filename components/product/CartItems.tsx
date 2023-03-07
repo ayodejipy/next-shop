@@ -6,7 +6,7 @@ import type { ICartProduct } from "@/types/product";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { urlFor } from "@/utils/client";
 import { formatCurrency } from "@/hooks/useFormatCurrency";
-import { removeItem } from "@/store/user";
+import { removeItem, increaseItem, decreaseItem } from "@/store/user";
 import { fetchPostJSON } from "@/utils/api-helper";
 import getStripe from "@/utils/get-stripejs";
 
@@ -101,7 +101,20 @@ function CartItems({ open, toggle }: IProps) {
                                                                                 <p className="mt-1 text-sm text-gray-500">{product.item.color}</p>
                                                                             </div>
                                                                             <div className="flex flex-1 items-end justify-between text-sm">
-                                                                                <p className="text-gray-500">Qty {product.quantity}</p>
+                                                                                <div>
+                                                                                    <div className="border border-gray-50 flex items-center gap-2 mt-2">
+                                                                                        <button type="button" onClick={() => dispatch(decreaseItem(product))} className="border-none bg-gray-200 px-2.5 py-1.5">
+                                                                                            -
+                                                                                        </button>
+                                                                                        <div id="product-quantity" className="inline-block text-center px-0.5">
+                                                                                            {product.quantity}
+                                                                                        </div>
+                                                                                        <button type="button" onClick={() => dispatch(increaseItem(product))} className="border-none bg-gray-200 px-2.5 py-1.5">
+                                                                                            +
+                                                                                        </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                                {/* <p className="text-gray-500">Qty {product.quantity}</p> */}
 
                                                                                 <div className="flex">
                                                                                     <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={() => dispatch(removeItem(product))}>
@@ -123,7 +136,7 @@ function CartItems({ open, toggle }: IProps) {
                                             </div>
 
                                             <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-                                                { cart.length > 0 ? (
+                                                {cart.length > 0 ? (
                                                     <>
                                                         <div className="flex justify-between text-base font-medium text-gray-900">
                                                             <p>Subtotal</p>
@@ -137,7 +150,7 @@ function CartItems({ open, toggle }: IProps) {
                                                         </div>
                                                     </>
                                                 ) : null}
-                                                
+
                                                 <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                                                     <p>
                                                         <button type="button" className="ml-1 first-letter:font-medium text-indigo-600 hover:text-indigo-500" onClick={() => toggle(false)}>
