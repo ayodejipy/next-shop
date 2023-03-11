@@ -10,9 +10,9 @@ function UserAvatar({ user }: { user: IProps }) {
     const dispatch = useAppDispatch();
 
     return (
-        <Menu as="div" className="relative ml-3">
+        <Menu as="div" className="relative ml-3" data-testid="user-avatar">
             <div>
-                <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                <Menu.Button className="user-icon flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="sr-only">Open user menu</span>
                     <img className="inline-block h-9 w-9 rounded-full" src={user.avatar} alt={user.name} />
                 </Menu.Button>
@@ -21,7 +21,7 @@ function UserAvatar({ user }: { user: IProps }) {
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <Menu.Item>
                         {({ active }) => (
-                            <button type="button" onClick={() => dispatch(clearUser())} className="block px-4 py-2 text-sm text-red-600">
+                            <button data-testid="logout-btn" type="button" onClick={() => dispatch(clearUser())} className="block px-4 py-2 text-sm text-red-600">
                                 Sign out
                             </button>
                         )}

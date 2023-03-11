@@ -36,7 +36,7 @@ const Navbar = () => {
             <header className="relative z-10">
                 <nav aria-label="Top">
                     {/* Top navigation */}
-                    <div className="bg-gray-900">
+                    <div className="bg-gray-900" data-testid="topnav">
                         <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                             <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">Get free delivery on orders over $100</p>
 
@@ -58,7 +58,7 @@ const Navbar = () => {
                             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                                 <div className="flex h-16 items-center justify-between">
                                     {/* Logo (lg+) */}
-                                    <div className="hidden lg:flex lg:items-center">
+                                    <div className="hidden lg:flex lg:items-center" data-testid="logo-wrapper">
                                         <Link href="/">
                                             <span className="sr-only">Your Company</span>
                                             {/* <Image
@@ -101,16 +101,16 @@ const Navbar = () => {
                                                     </a>
                                                 </div>
 
-                                                <div className="flex items-center">
+                                                <div className="flex items-center" data-testid="user-profile">
                                                     {user && user._id ? (
                                                         <UserAvatar user={user} />
                                                     ) : (
                                                         <>
-                                                            <Link href="/auth/login" className="-m-2 p-2 inline-block sm:hidden text-gray-400 hover:text-gray-500">
+                                                            <Link data-testid="user-icon" href="/auth/login" className="-m-2 p-2 inline-block sm:hidden text-gray-400 hover:text-gray-500">
                                                                 <span className="sr-only">Account</span>
                                                                 <UserIcon className="h-6 w-6" aria-hidden="true" />
                                                             </Link>
-                                                            <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                                                            <div ata-testid="auth-links" className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                                                                 <Link href="/auth/login"  className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                                     Sign in
                                                                 </Link>
@@ -126,10 +126,10 @@ const Navbar = () => {
 
                                             <span className="mx-4 h-6 w-px bg-gray-200 lg:mx-6" aria-hidden="true" />
 
-                                            <div className="flow-root">
+                                            <div className="flow-root" data-testid="cart-wrapper">
                                                 <button type="button" onClick={() => setOpen(true)} className="group -m-2 flex items-center p-2">
                                                     <ShoppingBagIcon className="h-6 w-6 flex-shrink-0 text-gray-800 group-hover:text-gray-500" aria-hidden="true" />
-                                                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cart?.length}</span>
+                                                    <span data-testid="cart-value" className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cart?.length}</span>
                                                     <span className="sr-only">items in cart, view bag</span>
                                                 </button>
                                             </div>
