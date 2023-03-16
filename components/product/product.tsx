@@ -3,11 +3,15 @@ import type { IProduct } from "@/types/product";
 import { urlFor } from "@/utils/client";
 import { formatCurrency } from "@/hooks/useFormatCurrency";
 
-const Product = ({ product }: {product: IProduct}) => {
+const Product = ({ product }: { product: IProduct }) => {
     return (
-        <div className="group relative">
+        <div data-testid="product-card" className="group relative">
             <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
-                <img src={urlFor(product.images[0].asset._ref).size(1000, 1000).url()} alt={product.images[0].alt.current} className="h-full w-full object-contain" />
+                <img
+                    data-testid="product-image"
+                    src={urlFor(product.images[0].asset._ref).size(1000, 1000).url()}
+                    alt={product.images[0].alt.current} className="h-full w-full object-contain"
+                />
             </div>
             <div className="mt-4 flex justify-between">
                 <div>
@@ -17,9 +21,9 @@ const Product = ({ product }: {product: IProduct}) => {
                             {product.name}
                         </Link>
                     </h3>
-                    <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                    <p data-testid="color" className="mt-1 text-sm text-gray-500">{product.color}</p>
                 </div>
-                <p className="text-sm font-medium text-gray-900">{formatCurrency(product.price)}</p>
+                <p data-testid="price" className="text-sm font-medium text-gray-900">{formatCurrency(product.price)}</p>
             </div>
         </div>
     );

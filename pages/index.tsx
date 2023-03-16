@@ -23,10 +23,10 @@ const Home = ({ products }: { products: IProduct[] }) => {
         function handleNotifications() {
             if (success !== undefined) {
                 dispatch(emptyCart());
-                toast.success("Your order has been confirmed, kindly check your email for more instructions.", toastConfig);
+                toast.success("Your order has been confirmed, kindly check your email for further instructions.", toastConfig);
             }
             if (cancelled !== undefined) {
-                toast.error("😞 Your order has been cancelled!", toastConfig);
+                toast.error("Hey there! 😞, your order has been cancelled!", toastConfig);
             }
         }
         handleNotifications();
