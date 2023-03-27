@@ -35,3 +35,16 @@
 //     }
 //   }
 // }
+
+import { mount } from "cypress/react";
+import { Provider } from "react-redux";
+import { store as getStore } from "@/store";
+
+// Cypress.Commands.add('mount', (component, options = {}) => {
+//   // Use the default store if one is not provided
+//   const { reduxStore = getStore(), ...mountOptions } = options
+
+//   const wrapped = <Provider store={reduxStore}>{component}</Provider>
+
+//   return mount(wrapped, mountOptions)
+// })

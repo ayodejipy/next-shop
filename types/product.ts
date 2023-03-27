@@ -1,16 +1,15 @@
 export type Image = {
-    alt: { _slug: string; current: string };
+    alt: { _type: string; current: string };
     asset: { _type: string; _ref: string };
     _key: string;
     _type: string;
 }
 
 export interface IProduct {
-	_id: number;
+    _id: string;
     name: string;
-    slug: string;
+    slug: { _type: string; current: string };
     description: string;
-    href: string
     images: Image[];
     price: number;
     color: string;

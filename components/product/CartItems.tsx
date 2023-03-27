@@ -73,7 +73,7 @@ function CartItems({ open, toggle }: IProps) {
                                                 <div className="flex items-start justify-between">
                                                     <Dialog.Title className="text-lg font-medium text-gray-900">Shopping cart</Dialog.Title>
                                                     <div className="ml-3 flex h-7 items-center">
-                                                        <button type="button" className="-m-2 p-2 text-gray-400 hover:text-gray-500" onClick={() => toggle(false)}>
+                                                        <button data-testid="close" type="button" className="-m-2 p-2 text-gray-400 hover:text-gray-500" onClick={() => toggle(false)}>
                                                             <span className="sr-only">Close panel</span>
                                                             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                                                         </button>
@@ -85,9 +85,12 @@ function CartItems({ open, toggle }: IProps) {
                                                         {cart.length > 0 ? (
                                                             <ul role="list" className="-my-6 divide-y divide-gray-200">
                                                                 {cart.map((product: ICartProduct) => (
-                                                                    <li key={product.item._id} className="flex py-6">
+                                                                    <li data-testid="cart-product" key={product.item._id} className="flex py-6">
                                                                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                                            <img src={urlFor(product.item.images[0].asset._ref).url()} alt={product.item.images[0].alt.current} className="h-full w-full object-cover object-center" />
+                                                                            <img data-testid="product-image" src={urlFor(product.item.images[0].asset._ref).url()}
+                                                                                alt={product.item.images[0].alt.current}
+                                                                                className="h-full w-full object-cover object-center"
+                                                                            />
 
                                                                             {/* <img src={product.imageSrc} alt={product.imageAlt} className="h-full w-full object-cover object-center" /> */}
                                                                         </div>
@@ -95,21 +98,25 @@ function CartItems({ open, toggle }: IProps) {
                                                                         <div className="ml-4 flex flex-1 flex-col">
                                                                             <div>
                                                                                 <div className="flex justify-between text-base font-medium text-gray-900">
-                                                                                    <h3>{product.item.name}</h3>
-                                                                                    <p className="ml-4">{formatCurrency(product.item.price)}</p>
+                                                                                    <h3 data-testid="name">{product.item.name}</h3>
+                                                                                    <p data-testid="price" className="ml-4">
+                                                                                        {formatCurrency(product.item.price)}
+                                                                                    </p>
                                                                                 </div>
-                                                                                <p className="mt-1 text-sm text-gray-500">{product.item.color}</p>
+                                                                                <p data-testid="color" className="mt-1 text-sm text-gray-500">
+                                                                                    {product.item.color}
+                                                                                </p>
                                                                             </div>
                                                                             <div className="flex flex-1 items-end justify-between text-sm">
                                                                                 <div>
                                                                                     <div className="border border-gray-50 flex items-center gap-2 mt-2">
-                                                                                        <button type="button" onClick={() => dispatch(decreaseItem(product))} className="border-none bg-gray-200 px-2.5 py-1.5">
+                                                                                        <button data-testid="decrease-qnt" type="button" onClick={() => dispatch(decreaseItem(product))} className="border-none bg-gray-200 px-2.5 py-1.5">
                                                                                             -
                                                                                         </button>
-                                                                                        <div id="product-quantity" className="inline-block text-center px-0.5">
+                                                                                        <div data-testid="quantity" id="product-quantity" className="inline-block text-center px-0.5">
                                                                                             {product.quantity}
                                                                                         </div>
-                                                                                        <button type="button" onClick={() => dispatch(increaseItem(product))} className="border-none bg-gray-200 px-2.5 py-1.5">
+                                                                                        <button data-testid="increase-qnt" type="button" onClick={() => dispatch(increaseItem(product))} className="border-none bg-gray-200 px-2.5 py-1.5">
                                                                                             +
                                                                                         </button>
                                                                                     </div>
@@ -117,7 +124,7 @@ function CartItems({ open, toggle }: IProps) {
                                                                                 {/* <p className="text-gray-500">Qty {product.quantity}</p> */}
 
                                                                                 <div className="flex">
-                                                                                    <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={() => dispatch(removeItem(product))}>
+                                                                                    <button data-testid="remove-product" type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={() => dispatch(removeItem(product))}>
                                                                                         Remove
                                                                                     </button>
                                                                                 </div>
@@ -127,7 +134,7 @@ function CartItems({ open, toggle }: IProps) {
                                                                 ))}
                                                             </ul>
                                                         ) : (
-                                                            <div className="flex justify-center text-base font-medium text-gray-900">
+                                                            <div data-testid="empty-cart" className="flex justify-center text-base font-medium text-gray-900">
                                                                 <p> Cart is currently empty </p>
                                                             </div>
                                                         )}
@@ -140,7 +147,7 @@ function CartItems({ open, toggle }: IProps) {
                                                     <>
                                                         <div className="flex justify-between text-base font-medium text-gray-900">
                                                             <p>Subtotal</p>
-                                                            <p>{formatCurrency(getTotal)}</p>
+                                                            <p data-testid="subtotal">{formatCurrency(getTotal)}</p>
                                                         </div>
                                                         <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                                                         <div className="mt-6">
