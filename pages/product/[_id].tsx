@@ -43,8 +43,8 @@ const ProductDetail = ({ product }: { product: IProduct }) => {
                                                 <>
                                                     <span className="sr-only"> {product.name} </span>
                                                     <span className="absolute inset-0 overflow-hidden rounded-md">
-                                                        {/* <Image src={urlFor(image.asset._ref).url()} alt={image.alt.current} className="h-full w-full object-cover object-center sm:rounded-lg" /> */}
-                                                        <img src={urlFor(image.asset._ref).size(700, 700).url()} alt={image.alt.current} className="h-full w-full object-cover" />
+                                                        <Image src={urlFor(image.asset._ref).size(700, 700).url()} width="700" height="300" alt={image.alt.current} className="h-full w-full object-contain  sm:rounded-lg" />
+                                                        {/* <img src={urlFor(image.asset._ref).size(700, 700).url()} alt={image.alt.current} className="h-full w-full object-cover" /> */}
                                                     </span>
                                                     <span className={classNames(selected ? "ring-indigo-500" : "ring-transparent", "pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2")} aria-hidden="true" />
                                                 </>
@@ -57,8 +57,8 @@ const ProductDetail = ({ product }: { product: IProduct }) => {
                             <Tab.Panels className="min-h-[40rem] w-full">
                                 {product.images?.map((image: ImageProp) => (
                                     <Tab.Panel key={image._key}>
-                                        {/* <Image fill src={urlFor(image.asset._ref).url()} alt={image.alt.current} className="h-full w-full object-cover object-center sm:rounded-lg" /> */}
-                                        <img src={urlFor(image.asset._ref).size(400, 400).url()} alt={image.alt.current} className="h-full w-full object-contain sm:rounded-lg" />
+                                        <Image src={urlFor(image.asset._ref).size(500, 500).url()} width="500" height="500" alt={image.alt.current} className="h-full w-full object-contain sm:rounded-lg" />
+                                        {/* <img src={urlFor(image.asset._ref).size(400, 400).url()} alt={image.alt.current} className="h-full w-full object-contain sm:rounded-lg" /> */}
                                     </Tab.Panel>
                                 ))}
                             </Tab.Panels>

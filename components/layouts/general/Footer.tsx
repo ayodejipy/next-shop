@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import Image from "next/image"
 import { Dialog, Transition } from "@headlessui/react";
 
 
@@ -48,7 +49,9 @@ const Footer = () => {
 
 							<div className="relative mt-6 flex items-center py-12 px-6 sm:py-16 sm:px-10 lg:mt-0">
 								<div className="absolute inset-0 overflow-hidden rounded-lg">
-									<img
+									<Image
+										width={200}
+										height={200}
 										src="https://tailwindui.com/img/ecommerce-images/footer-02-exclusive-sale.jpg"
 										alt=""
 										className="h-full w-full object-cover object-center saturate-0 filter"
