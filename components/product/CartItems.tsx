@@ -88,7 +88,7 @@ function CartItems({ open, toggle }: IProps) {
                                                                 {cart.map((product: ICartProduct) => (
                                                                     <li data-testid="cart-product" key={product.item._id} className="flex py-6">
                                                                         <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                                                            <Image data-testid="product-image" src={urlFor(product.item.images[0].asset._ref).url()}
+                                                                            <Image data-testid="product-image" width={100} height={100} src={urlFor(product.item.images[0].asset._ref).size(100, 100).url()}
                                                                                 alt={product.item.images[0].alt.current}
                                                                                 className="h-full w-full object-cover object-center"
                                                                             />

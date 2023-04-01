@@ -88,7 +88,7 @@ const Navbar = () => {
                                     {/* Logo (lg-) */}
                                     <a href="#" className="lg:hidden">
                                         <span className="sr-only">Your Company</span>
-                                        <Image width={32} height={32} src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Company's logo" className="h-8 w-auto" />
+                                        <Image width={50} height={50} src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Company's logo" className="h-8 w-auto" />
                                     </a>
 
                                     <div className="flex flex-1 items-center justify-end">
