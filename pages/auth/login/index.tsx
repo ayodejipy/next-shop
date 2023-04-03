@@ -39,25 +39,25 @@ const SignIn: NextPageWithLayout = () => {
                 dispatch(getUsers(rest));
 
                 // check if cart is not empty
-                if (cart.length > 0) {
-                    const modifiedCart = cart.map((item: ICartProduct) => {
-                        const newProductmarkup = { _type: 'product', _ref: item.item._id };
-                        const newProduct = { item: newProductmarkup, quantity: item.quantity };
+                // if (cart.length > 0) {
+                //     const modifiedCart = cart.map((item: ICartProduct) => {
+                //         const newProductmarkup = { _type: 'product', _ref: item.item._id };
+                //         const newProduct = { item: newProductmarkup, quantity: item.quantity };
 
-                        return newProduct;
-                    });
+                //         return newProduct;
+                //     });
 
-                    // sync items in cart to current user
-                    const item = {
-                        _type: "carts",
-                        items: modifiedCart,
-                        owner: {
-                            _type: "reference",
-                            _ref: rest._id,
-                        },
-                    } as unknown as ICartObject;
+                //     // sync items in cart to current user
+                //     const item = {
+                //         _type: "carts",
+                //         items: modifiedCart,
+                //         owner: {
+                //             _type: "reference",
+                //             _ref: rest._id,
+                //         },
+                //     } as unknown as ICartObject;
                     
-                }
+                // }
 
                 router.push("/");
             });
