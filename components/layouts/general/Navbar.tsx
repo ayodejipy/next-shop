@@ -1,7 +1,7 @@
 import { Fragment, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Dialog, Transition } from '@headlessui/react'
+import { Dialog, Transition } from "@headlessui/react";
 import CartItems from "@/components/product/CartItems";
 import Modal from "@/components/Uis/Modal";
 import UserAvatar from "@/components/user/Avatar";
@@ -28,8 +28,8 @@ const Navbar = () => {
 
     const toggleModal = () => {
         // negate the previous value
-        setOpenModal(prev => !prev);
-    }
+        setOpenModal((prev) => !prev);
+    };
 
     return (
         <>
@@ -67,7 +67,7 @@ const Navbar = () => {
                                                 alt="Company's logo"
                                                 fill
                                             /> */}
-                                            <Image width={32} height={32} className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
+                                            <Image width={32} height={32} src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="" />
                                         </Link>
                                     </div>
 
@@ -88,7 +88,7 @@ const Navbar = () => {
                                     {/* Logo (lg-) */}
                                     <a href="#" className="lg:hidden">
                                         <span className="sr-only">Your Company</span>
-                                        <Image width={50} height={50} src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Company's logo" className="h-8 w-auto" />
+                                        <Image width={50} height={50} className="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Company's logo" />
                                     </a>
 
                                     <div className="flex flex-1 items-center justify-end">
@@ -111,11 +111,11 @@ const Navbar = () => {
                                                                 <UserIcon className="h-6 w-6" aria-hidden="true" />
                                                             </Link>
                                                             <div ata-testid="auth-links" className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                                                                <Link href="/auth/login"  className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                                <Link href="/auth/login" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                                     Sign in
                                                                 </Link>
                                                                 <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                                                                <Link href="/auth/login"  onClick={toggleModal} className="text-sm font-medium text-gray-700 hover:text-gray-800">
+                                                                <Link href="/auth/login" onClick={toggleModal} className="text-sm font-medium text-gray-700 hover:text-gray-800">
                                                                     Create account
                                                                 </Link>
                                                             </div>
@@ -129,7 +129,9 @@ const Navbar = () => {
                                             <div className="flow-root" data-testid="cart-wrapper">
                                                 <button type="button" onClick={() => setOpen(true)} className="group -m-2 flex items-center p-2">
                                                     <ShoppingBagIcon className="h-6 w-6 flex-shrink-0 text-gray-800 group-hover:text-gray-500" aria-hidden="true" />
-                                                    <span data-testid="cart-value" className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{cart?.length}</span>
+                                                    <span data-testid="cart-value" className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                                                        {cart?.length}
+                                                    </span>
                                                     <span className="sr-only">items in cart, view bag</span>
                                                 </button>
                                             </div>

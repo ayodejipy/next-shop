@@ -12,7 +12,6 @@ import { toastConfig } from "@/hooks/useToast";
 import type { IProduct } from "@/types/product";
 import type { Data } from "./api/product";
 
-
 const Home = ({ products }: { products: IProduct[] }) => {
     const dispatch = useAppDispatch();
     const router = useRouter();
@@ -46,11 +45,13 @@ const Home = ({ products }: { products: IProduct[] }) => {
                         <p className="text-gray-500 text-center leading-normal">Our feature products are carefully selected based on their quality, style, and functionality. We pride ourselves on providing our customers with a wide range of high-quality products that not only meet but exceed their expectations.</p>
                     </div>
 
-                    <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                        {products.map((product) => (
-                            <Product key={product._id} product={product} />
-                        ))}
-                    </div>
+                    {products.length >= 1 && (
+                        <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+                            {products.map((product) => (
+                                <Product key={product._id} product={product} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
             <Promotion />
@@ -60,15 +61,21 @@ const Home = ({ products }: { products: IProduct[] }) => {
 
 export const getServerSideProps = wrapper.getServerSideProps((store) => async (context) => {
     const response = await store.dispatch(getProducts.initiate());
-    const products = response.data as unknown as Data;
+    // console.log({ response });
 
-    console.log({ response });
+    // console.log(process.env.NEXT_PUBLIC_BASE_URL);
+
+    let products: Data = {
+        message: "",
+        success: false,
+    };
+    if (!response.isError) products = response.data as unknown as Data;
 
     await Promise.all(store.dispatch(getRunningQueriesThunk()));
 
     return {
         props: {
-            products: products.data,
+            products: products.data ?? [],
         },
     };
 });

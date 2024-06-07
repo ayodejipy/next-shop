@@ -16,6 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         const response = await client.fetch(productQuery);
         res.status(200).json({ success: true, message: "Products fetched successfully", data: response });
     } catch (error) {
+        console.log({ error })
         res.status(400).json({ success: false, message: "Unable to fetch products" });
     }
 }

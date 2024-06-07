@@ -7,7 +7,7 @@ import type { IProduct, ICartObject } from "@/types/product";
 
 export const apiSlice = createApi({
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:3001/api/",
+        baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
     }),
     extractRehydrationInfo(action, { reducerPath }) {
         if (action.type === HYDRATE) {
